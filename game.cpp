@@ -1,6 +1,6 @@
 #include "game.h"
 #include <time.h>
-#include <stdlib.h>
+//#include <stdlib.h>
 #include "gameState.h"
 
 game::game(int width, int height, string title)
@@ -8,6 +8,10 @@ game::game(int width, int height, string title)
 	_data = make_shared<gameData>();//création de la game en mémoire dynamique
 	//création de la fenêtre qui changera de contenu selon la state créée ensuite
 	_data->window.create(VideoMode(width, height), title, Style::Close | Style::Titlebar);
+	_data->view = _data->window.getDefaultView();
+	_data->window.setView(_data->view);
+
+	//_data->window.setSize(Vector2u(width * 4, height * 4));
 	//todo création d’un 1er état de jeu (1ère fenêtre)
 	_data->machine.addState(stateRef(new gameState(_data)));
 	//todo initialisation du random avec srand pour la création des pipes de hauteur aléatoire
@@ -26,6 +30,21 @@ void game::run()
 	float accumulator = 0.0f;
 	while (_data->window.isOpen())
 	{
-		_data->machine.processStateChanges();
+		_data->machine.processStateChanges(); //vérifie si on a des changements
+		newTime = _clock.getElapsedTime().asSeconds();
+		frameTime = newTime - currentTime;
+		if (frameTime > 0.25f) {//si on dépasse le quart de seconde, on ajuste
+			frameTime = 0.25f; //a .25 seconde pour le calcul de accumulator
+		}
+		currentTime = newTime; //new time devient le current time
+		accumulator += frameTime; //accumulator accumule tous les frameTimes
+		while (accumulator >= dt) { //si on dépasse le temps du frame (1/60 de seconde)
+		//on vérifie les événements et on update la fenêtre
+			_data->machine.getActiveState()->handleInput();
+			_data->machine.getActiveState()->update(dt);
+			accumulator -= dt; //on retire dt de l’accumulator pour l’interpolation
+		}
+		interpolation = accumulator / dt; //le temps d’exécution de la loop pour le draw
+		_data->machine.getActiveState()->draw(interpolation);
 	}
 }

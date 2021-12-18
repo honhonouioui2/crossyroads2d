@@ -2,6 +2,7 @@
 
 gameState::gameState(gameDataRef data) : _data(data)
 {
+	_world = new TileMap(_data);
 }
 
 gameState::~gameState() {
@@ -9,7 +10,21 @@ gameState::~gameState() {
 
 void gameState::init()
 {
-	
+	string temp_str = "Resources/segmentexample0.txt";
+	string temp_str2 = "Resources/segmentexample1.txt";
+	_world->init();
+	_world->fetchTileMapMetaData(temp_str);
+	_world->fetchTileMapMetaData(temp_str);
+	_world->fetchTileMapMetaData(temp_str);
+	_world->fetchTileMapMetaData(temp_str);
+	_world->fetchTileMapMetaData(temp_str);
+	_world->fetchTileMapMetaData(temp_str);
+	_world->fetchTileMapMetaData(temp_str);
+	_world->fetchTileMapMetaData(temp_str);
+	_world->fetchTileMapMetaData(temp_str);
+	_world->fetchTileMapMetaData(temp_str);
+	_world->fetchTileMapMetaData(temp_str);
+	_world->fetchTileMapMetaData(temp_str);
 }
 
 void gameState::handleInput()
@@ -30,5 +45,7 @@ void gameState::update(float dt)
 void gameState::draw(float dt) const
 {
 	_data->window.clear();
+	_world->draw();
+	_world->drawDecor();
 	_data->window.display();
 }

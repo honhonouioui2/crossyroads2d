@@ -1,47 +1,183 @@
 <?xml version="1.0" encoding="utf-8"?>
 <data>
 	<tile>
-		<texture>tile water frame 0</texture>
-		<collision>0</collision>
-		<type>Water</type>
+		<type>NoData</type>
 		<id>000</id>
 	</tile>
 
+	<!--pavement tiles-->
 	<tile>
-		<texture>tile pavement middle</texture>
+		<texture>pavement left bottom</texture>
 		<collision>0</collision>
 		<type>Pavement</type>
 		<id>001</id>
 	</tile>
-
+	
 	<tile>
-		<texture>tile pavement down</texture>
+		<texture>pavement right bottom</texture>
 		<collision>0</collision>
 		<type>Pavement</type>
 		<id>002</id>
 	</tile>
 
 	<tile>
-		<texture>tile plant 1 bottom</texture>
-		<collision>1</collision>
-		<type>Plant</type>
+		<texture>pavement middle bottom</texture>
+		<collision>0</collision>
+		<type>Pavement</type>
 		<id>003</id>
-		<decor>tile plant 1 top</decor>
 	</tile>
 
 	<tile>
-		<texture>tile plant 2 bottom</texture>
+		<texture>pavement middle bottom drain</texture>
+		<collision>0</collision>
+		<type>Pavement</type>
+		<id>004</id>
+	</tile>
+
+	<tile>
+		<texture>pavement middle</texture>
+		<collision>0</collision>
+		<type>Pavement</type>
+		<id>005</id>
+	</tile>
+
+	<tile>
+		<texture>pavement middle top</texture>
+		<collision>0</collision>
+		<type>Pavement</type>
+		<id>006</id>
+	</tile>
+	
+	<!--street tiles-->
+	<tile>
+		<texture>street middle</texture>
+		<collision>0</collision>
+		<type>Street</type>
+		<id>007</id>
+	</tile>
+
+	<tile>
+		<texture>street drain</texture>
+		<collision>0</collision>
+		<type>Street</type>
+		<id>008</id>
+	</tile>
+
+	<tile>
+		<texture>street one way 1</texture>
+		<collision>0</collision>
+		<type>Street</type>
+		<id>009</id>
+	</tile>
+
+	<tile>
+		<texture>street one way 2 top</texture>
+		<collision>0</collision>
+		<type>Street</type>
+		<id>010</id>
+	</tile>
+
+	<tile>
+		<texture>street one way 2 bottom</texture>
+		<collision>0</collision>
+		<type>Street</type>
+		<id>011</id>
+	</tile>
+
+	<tile>
+		<texture>street two way 1</texture>
+		<collision>0</collision>
+		<type>Street</type>
+		<id>012</id>
+	</tile>
+
+	<tile>
+		<texture>street two way 2 top</texture>
+		<collision>0</collision>
+		<type>Street</type>
+		<id>013</id>
+	</tile>
+
+	<tile>
+		<texture>street two way 2 bottom</texture>
+		<collision>0</collision>
+		<type>Street</type>
+		<id>014</id>
+	</tile>
+
+	<tile>
+		<type>VehicleSpawner</type>
+		<id>015</id>
+	</tile>
+	
+	
+	<tile>
+		<texture>plant 1 bottom</texture>
 		<collision>1</collision>
 		<type>Plant</type>
-		<id>004</id>
-		<decor>tile plant 2 top</decor>
+		<id>016</id>
+		<decor>plant 1 top</decor>
 	</tile>
 
 	<tile>
-		<texture>tile stand bottom</texture>
+		<type>LogSpawner</type>
+		<id>017</id>
+	</tile>
+
+	<tile>
+		<type>WaterLilySpawner</type>
+		<id>018</id>
+	</tile>
+	<!--<tile>
+		<type>VehicleSpawner</type>
+		<id>020</id>
+	</tile>
+	mapdata
+	<preset>
+		<type>oneway</type>
+		<bias>
+			<twoway>0.5</twoway>
+			<pavement>0.5</pavement>
+		</bias>
+	</preset>
+
+	<preset>
+		<type>twoway</type>
+		<bias>
+			<oneway>0.5</oneway>
+			<pavement>0.5</pavement>
+		</bias>
+	</preset>
+
+	<preset>
+		<type>pavement</type>
+		<bias>
+			<twoway>0.5</twoway>
+			<oneway>0.5</oneway>
+		</bias>
+	</preset>-->
+	
+	<!--<tile>
+		<texture>plant 1 bottom</texture>
+		<collision>1</collision>
+		<type>Plant</type>
+		<id>015</id>
+		<decor>plant 1 top</decor>
+	</tile>
+
+	<tile>
+		<texture>plant 2 bottom</texture>
+		<collision>1</collision>
+		<type>Plant</type>
+		<id>015</id>
+		<decor>plant 2 top</decor>
+	</tile>
+
+	<tile>
+		<texture>stand bottom</texture>
 		<collision>1</collision>
 		<type>Stand</type>
-		<id>005</id>
-		<decor>tile stand top</decor>
-	</tile>
+		<id>015</id>
+		<decor>stand top</decor>
+	</tile>-->
 </data>

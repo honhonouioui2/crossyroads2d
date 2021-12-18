@@ -1,9 +1,9 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include "DEFINITIONS.hpp"
+#include "TileMap.h"
 #include "game.h"
-//#include "state.hpp"
-//#include "tileMap.hpp"
+#include "state.hpp"
 
 using namespace sf;
 using namespace std;
@@ -11,7 +11,9 @@ using namespace std;
 class gameState : public state
 {
 private:
+
 	gameDataRef _data;
+	TileMap* _world;
 	Clock _clock;
 public:
 	gameState(gameDataRef data);
