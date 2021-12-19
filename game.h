@@ -15,6 +15,7 @@ struct gameData {
 	assetManager assets;
 	inputManager input;
 	View view;
+	//TileMap imag;
 };
 typedef shared_ptr<gameData> gameDataRef;
 

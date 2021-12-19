@@ -11,7 +11,7 @@
 #include <queue>
 #include "rapidxml.hpp"
 #include "game.h"
-//#include "entity.hpp"
+#include "gameObject.hpp"
 #include "carSpawnerEntity.h"
 
 using namespace std;
@@ -24,7 +24,7 @@ struct TileData {
 	string type;
 	int id;
 	Sprite sprite, decorSprite;
-	entity *tileEntity=nullptr;
+	gameObject* tileEntity = nullptr;
 };
 
 class TileMap {
@@ -42,9 +42,10 @@ public:
 	void parseXMLData();
 	void init(); // load XML tile data into an array, load sprites & set texture
 	
-	void draw(); // draw in view cells (TileData pair)
+	void update(float dt);
+	void draw(float dt); // draw in view cells (TileData pair)
 	void drawDecor(); // draw in view decor sprites 
 
-	//const TileData& at(int position) const; // read-only data
+	const TileData& at(int position_x, int position_y) const; // read-only data
 	const vector<vector<pair<TileData, TileData>>> getImageBuffer() const;
 };

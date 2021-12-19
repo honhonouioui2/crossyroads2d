@@ -8,12 +8,16 @@ carSpawnerEntity::~carSpawnerEntity() {
 
 void carSpawnerEntity::init()
 {
+	cout << "Car spawner initialized";
 }
 
-void carSpawnerEntity::update()
+void carSpawnerEntity::update(float delta)
 {
+	cout << "Car spawner update";
 }
 
-void carSpawnerEntity::draw() const
+void carSpawnerEntity::draw(float delta) const
 {
+	cout << "Car spawner draw";
 }
+

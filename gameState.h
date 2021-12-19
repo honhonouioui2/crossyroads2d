@@ -4,6 +4,7 @@
 #include "TileMap.h"
 #include "game.h"
 #include "state.hpp"
+#include "Player.h"
 
 using namespace sf;
 using namespace std;
@@ -13,7 +14,10 @@ class gameState : public state
 private:
 
 	gameDataRef _data;
+	
 	TileMap* _world;
+	Player* _player;
+
 	Clock _clock;
 public:
 	gameState(gameDataRef data);
