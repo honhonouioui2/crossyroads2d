@@ -17,16 +17,18 @@ void TileMap::fetchTileMapMetaData(string filePath) {
 		x = 0,
 		y = -bufferSize,
 		segment_length_y = 0;
-	queue<string> binary;
 
+	queue<string> binary;
 	while (getline(file, line)) { // read file, place into queue
 		binary.push(line);
 	}
 	file.close();
 
+	vector<vector<pair<TileData, TileData>>> segment;
 	segment_length_y = binary.size();
 	while (!binary.empty()) {
 		line = binary.front();
+		
 		cout << endl << "Line:'" << line << "'" << endl;
 
 		vector<pair<TileData, TileData>> row;
@@ -42,8 +44,9 @@ void TileMap::fetchTileMapMetaData(string filePath) {
 				line = line.substr(8, line.length());
 
 				// robustesse***
-				TileData tile = TileData(_xmlData[stoi(bytes, 0, 2)]); // can cause error if bad data
-				cout << "\\id:" << stoi(bytes, 0, 2) << "\\x(" << x << "):" << tile.sprite.getPosition().x << "\\y(" << y << "):" << tile.sprite.getPosition().y;
+				int id = stoi(bytes, 0, 2);
+				TileData tile = TileData(_xmlData[id]); // can cause error if bad data
+				cout << "\\id:" << tile.id << "\\x(" << x << "):" << tile.sprite.getPosition().x << "\\y(" << y << "):" << tile.sprite.getPosition().y;
 				
 				int spr_width = tile.sprite.getGlobalBounds().width;
 				
@@ -61,35 +64,31 @@ void TileMap::fetchTileMapMetaData(string filePath) {
 					cell.second = tile;
 					cell.second.sprite.setPosition(offset_x, offset_y);
 					cell.second.decorSprite.setPosition(offset_x, offset_y - cell.second.decorSprite.getGlobalBounds().height);
-				}
 
-				/*switch (tile.id) {
-				case 15:
-					// car spawner
-					// push
-					///carSpawnerEntity car(_data);// = carSpawnerEntity(_data);
-					//tile.tileEntity = new carSpawnerEntity(_data);
-					break;
-				case 17:
-					// log spawner
-					break;
-				case 18:
-					// water lily
-					break;
-				default:
-				}*/
+
+					// init gameObject for special tiles
+					if (id == 15) {
+						carSpawnerEntity* object = new carSpawnerEntity(_data);
+						object->init();
+						cell.second.tileEntity = object;
+					}
+				}
 			}
 			row.push_back(cell);
-
+			
 			x++;
 			cout << "|	";
 		} while (!line.empty());
 		binary.pop();
-		_imageBuffer.push_back(row);
+		segment.push_back(row);
 
 		y++;
 		x = 0;
 		cout << endl << endl << endl;
+	}
+
+	for (int i = segment.size() - 1; i >= 0; i--) {
+		_imageBuffer.push_back(segment[i]);
 	}
 }
 
@@ -137,7 +136,7 @@ void TileMap::parseXMLData() {
 
 TileMap::TileMap(gameDataRef data) : _data(data)
 {
-	//_xmlData = nullptr;
+//	_xmlData = nullptr;
 }
 
 TileMap::~TileMap()
@@ -151,9 +150,37 @@ void TileMap::init()
 	parseXMLData();
 }
 
-void TileMap::draw() {
-	//_data->view.move(Vector2f(0, 0));
-	//_data->window.setView(_data->view);
+void TileMap::update(float dt) {
+	for (int row_it = 0; row_it < _imageBuffer.size(); row_it++) {
+		vector<pair<TileData, TileData>> row = _imageBuffer.at(row_it);
+		pair<TileData, TileData> first_cell = row.front();
+
+		//bottom
+		int spr_width = first_cell.first.sprite.getGlobalBounds().width;
+		if ((_data->view.getCenter().y + (_data->view.getSize().y / 2)) < first_cell.first.sprite.getPosition().y || (_data->view.getCenter().y - (_data->view.getSize().y / 2)) > first_cell.first.sprite.getPosition().y + spr_width) {
+			continue;
+		}
+
+		//cout << "toile";
+
+
+		for (int cell_it = 0; cell_it < row.size(); cell_it++) {
+			pair<TileData, TileData> cell = row.at(cell_it);
+			_data->window.draw(cell.first.sprite);
+			_data->window.draw(cell.second.sprite);
+
+			if (cell.second.tileEntity != nullptr) {
+				//cout << "ID: " << cell.second.id;
+				
+				cell.second.tileEntity->update(dt);
+			}
+		}
+	}
+}
+
+void TileMap::draw(float dt) {
+	//_data->view.move(Vector2f(0, -0.5));
+	_data->window.setView(_data->view);
 
 	_decorSpritesBuffer.clear();
 	for (int row_it = 0; row_it < _imageBuffer.size(); row_it++) {
@@ -166,6 +193,7 @@ void TileMap::draw() {
 			continue;
 		}
 
+
 		for (int cell_it = 0; cell_it < row.size(); cell_it++) {
 			pair<TileData, TileData> cell = row.at(cell_it);
 			_data->window.draw(cell.first.sprite);
@@ -176,6 +204,9 @@ void TileMap::draw() {
 				elem.first = row_it;
 				elem.second = cell_it;
 				_decorSpritesBuffer.push_back(elem);
+			}
+			if (cell.second.tileEntity != nullptr) {
+				cell.second.tileEntity->draw(dt);
 			}
 		}
 	}
@@ -189,6 +220,15 @@ void TileMap::drawDecor() {
 	}
 }
 
+
+const TileData& TileMap::at(int position_x, int position_y) const
+{
+	assert(position_y >= 0 && position_y < _imageBuffer.size()); // doit tester
+	// TileData tileData;
+	// tileData = _imageBuffer.at(position_y).at(position_x).first
+	// check second tile for collision and if collision overwrite tileData collision
+	return _imageBuffer.at(position_y).at(position_x).first;
+}
 
 const vector<vector<pair<TileData, TileData>>> TileMap::getImageBuffer() const {
 	return _imageBuffer;
